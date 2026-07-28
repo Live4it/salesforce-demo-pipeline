@@ -1,6 +1,6 @@
 /**
  * File Name: AccountFeatureTest 
- * Description:  
+ * Description:
  *
  * This file is part of an Apex EnterPrise Patterns Training.
  *
