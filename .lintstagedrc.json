@@ -1,4 +1,4 @@
 {
   "force-app/**/*.{js,ts}": "eslint --fix",
-  "force-app/**/*.cls": "sf scanner run --engine pmd --target"
+  "force-app/**/*.cls": "sf scanner run --engine pmd --target" 
 }
