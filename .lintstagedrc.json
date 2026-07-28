@@ -1,0 +1,3 @@
+{
+  "force-app/**/*.{js,ts}": "eslint --fix"
+}
