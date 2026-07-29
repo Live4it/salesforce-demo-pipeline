@@ -41,5 +41,4 @@ node_modules/
 **/components/SiteFooter.component*
 **/components/SiteLogin.component*
 **/components/SitePoweredBy.component*
-
-U
+**/classes/AccountTriggerHandlerImp.cls*
