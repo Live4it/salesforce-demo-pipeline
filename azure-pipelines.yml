@@ -1,0 +1,38 @@
+trigger: none # Geen automatische build bij commits op branches
+
+pr:
+  branches:
+    include:
+      - dev
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Sla je Server Key en Consumer ID veilig op in Azure DevOps Variable Groups
+  - group: salesforce-credentials
+  - name: SF_CONSUMER_KEY
+    value: $(sfConsumerKey)
+  - name: SF_USERNAME_DEV
+    value: $(sfUsernameDev)
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install -g @salesforce/cli
+  displayName: 'Install Salesforce CLI'
+
+- script: |
+    echo "$(sfServerKeySecret)" > server.key
+    sf org login jwt --username $(SF_USERNAME_DEV) --jwt-key-file server.key --client-id $(SF_CONSUMER_KEY) --instance-url https://salesforce.com --set-default
+  displayName: 'Authenticeren bij Salesforce Dev Sandbox'
+
+- script: |
+    sf project deploy validate --source-dir force-app --target-org $(SF_USERNAME_DEV) --wait 30
+  displayName: 'Salesforce Code Valideren (Check-Only)'
+
