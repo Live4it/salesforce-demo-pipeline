@@ -36,6 +36,6 @@ steps:
 # --- IMPLEMENTATIE NAAR PROD OMGEVING (Bij push/merge naar main branch) ---
 - script: |
     sf org login jwt --username $(sfUsernameProd) --jwt-key-file $(sfKeyFile.secureFilePath) --client-id $(sfConsumerKeyProd) --instance-url https://login.salesforce.com
-    sf project deploy start --source-dir force-app --target-org $(sfUsernameDev) --wait 30
+    sf project deploy start --source-dir force-app --target-org $(sfUsernameProd) --wait 30
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
   displayName: 'Deploy naar Productie Org'
