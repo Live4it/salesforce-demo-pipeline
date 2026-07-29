@@ -14,7 +14,7 @@ variables:
   # Sla je Server Key en Consumer ID veilig op in Azure DevOps Variable Groups
   - group: salesforce-credentials
   - name: SF_CONSUMER_KEY
-    value: $(sfConsumerKey)
+    value: $(sfConsumerKeyDev)
   - name: SF_USERNAME_DEV
     value: $(sfUsernameDev)
 
