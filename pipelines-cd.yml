@@ -1,0 +1,45 @@
+trigger:
+  branches:
+    include:
+      - dev
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: salesforce-credentials
+  - name: SF_CONSUMER_KEY
+    value: $(sfConsumerKey)
+  # Gebruik conditions in de stappen voor de juiste target orgs
+  - name: SF_USERNAME_DEV
+    value: $(sfUsernameDev)
+  - name: SF_USERNAME_PROD
+    value: $(sfUsernameProd)
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install -g @salesforce/cli
+  displayName: 'Install Salesforce CLI'
+
+# --- DEPLOY NAAR DEV OMGEVING ---
+- script: |
+    echo "$(sfServerKeySecret)" > server.key
+    sf org login jwt --username $(SF_USERNAME_DEV) --jwt-key-file server.key --client-id $(SF_CONSUMER_KEY) --instance-url https://salesforce.com
+    sf project deploy start --source-dir force-app --target-org $(SF_USERNAME_DEV) --wait 30
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+  displayName: 'Deploy naar Dev Sandbox'
+
+# --- DEPLOY NAAR PROD OMGEVING ---
+- script: |
+    echo "$(sfServerKeySecret)" > server.key
+    sf org login jwt --username $(SF_USERNAME_PROD) --jwt-key-file server.key --client-id $(SF_CONSUMER_KEY) --instance-url https://salesforce.com
+    sf project deploy start --source-dir force-app --target-org $(SF_USERNAME_PROD) --wait 30
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  displayName: 'Deploy naar Productie Org'
+
