@@ -9,37 +9,32 @@ pool:
 
 variables:
   - group: salesforce-credentials
-  - name: SF_CONSUMER_KEY
-    value: $(sfConsumerKey)
-  # Gebruik conditions in de stappen voor de juiste target orgs
-  - name: SF_USERNAME_DEV
-    value: $(sfUsernameDev)
-  - name: SF_USERNAME_PROD
-    value: $(sfUsernameProd)
 
 steps:
 - task: UseNode@1
   inputs:
-    version: '20.x'
-  displayName: 'Install Node.js via Ecosystem'
+    version: '22.x'
+  displayName: 'Install Node.js (Stabiele v22)'
 
 - script: |
     npm install -g @salesforce/cli
   displayName: 'Install Salesforce CLI'
 
-# --- DEPLOY NAAR DEV OMGEVING ---
-- script: |
-    echo "$(sfServerKeySecret)" > server.key
-    sf org login jwt --username $(SF_USERNAME_DEV) --jwt-key-file server.key --client-id $(SF_CONSUMER_KEY) --instance-url https://salesforce.com
-    sf project deploy start --source-dir force-app --target-org $(SF_USERNAME_DEV) --wait 30
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
-  displayName: 'Deploy naar Dev Sandbox'
+- task: DownloadSecureFile@1
+  name: sfKeyFile
+  inputs:
+    secureFile: 'server.key'
+  displayName: 'Download Salesforce Private Key Securely'
 
-# --- DEPLOY NAAR PROD OMGEVING ---
+# --- IMPLEMENTATIE NAAR DEV OMGEVING (Bij push/merge naar dev branch) ---
 - script: |
-    echo "$(sfServerKeySecret)" > server.key
-    sf org login jwt --username $(SF_USERNAME_PROD) --jwt-key-file server.key --client-id $(SF_CONSUMER_KEY) --instance-url https://salesforce.com
-    sf project deploy start --source-dir force-app --target-org $(SF_USERNAME_PROD) --wait 30
+    sf org login jwt --username $(sfUsernameDev) --jwt-key-file $(sfKeyFile.secureFilePath) --client-id $(sfConsumerKeyDev) --instance-url https://login.salesforce.com
+    sf project deploy start --source-dir force-app --target-org $(sfUsernameDev) --wait 30
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+  displayName: 'Deploy naar Dev Sandbox (Developer Org)'
+
+# --- IMPLEMENTATIE NAAR PROD OMGEVING (Bij push/merge naar main branch) ---
+- script: |
+    sf org login jwt --username $(sfUsernameProd) --jwt-key-file $(sfKeyFile.secureFilePath) --client-id $(sfConsumerKeyProd) --instance-url https://login.salesforce.com
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
   displayName: 'Deploy naar Productie Org'
-
