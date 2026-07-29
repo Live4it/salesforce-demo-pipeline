@@ -19,7 +19,7 @@ node_modules/
 
 # Overige bestanden die niet gedeployed hoeven te worden
 **/pages/BandwidthExceeded.page*
-**/pagesChangePassword.page*
+**/pages/ChangePassword.page*
 **/pages/CommunitiesLanding.page*
 **/pages/CommunitiesLogin.page*
 **/pages/CommunitiesSelfReg.page*
@@ -38,8 +38,8 @@ node_modules/
 **/pages/StdExceptionTemplate.page*
 **/pages/Unauthorized.page*
 **/pages/UnderConstruction.page*
-**/components/SiteFooter.page*
-**/components/SiteLogin.page*
-**/components/SitePoweredBy.page*
+**/components/SiteFooter.component*
+**/components/SiteLogin.component*
+**/components/SitePoweredBy.component*
 
 U
