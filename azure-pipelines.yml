@@ -36,7 +36,7 @@ steps:
 
 - script: |
     echo "$(sfServerKeySecret)" > server.key
-    sf org login jwt --username $(sfUsernameDev) --jwt-key-file $(sfKeyFile.secureFilePath) --client-id $(sfConsumerKey) --instance-url https://login.salesforce.com --set-default
+    sf org login jwt --username $(sfUsernameDev) --jwt-key-file $(sfKeyFile.secureFilePath) --client-id $(sfConsumerKeyDev) --instance-url https://login.salesforce.com --set-default
 
   displayName: 'Authenticeren bij Salesforce Dev Sandbox'
 
