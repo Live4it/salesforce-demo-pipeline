@@ -12,3 +12,8 @@ package.xml
 **/__tests__/**
 
 node_modules/
+
+# Sla fflib validatie en deployment op Salesforce op
+**/classes/fflib_*
+**/labels/fflib_*
+

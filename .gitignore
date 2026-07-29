@@ -49,3 +49,7 @@ $RECYCLE.BIN/
 
 # private key files for connection to Azure DevOps
 server.key
+
+# Sla fflib klassen over in Git
+force-app/main/default/classes/fflib_*
+force-app/main/default/classes/fflib_*.cls-meta.xml
