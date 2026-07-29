@@ -17,3 +17,29 @@ node_modules/
 **/classes/fflib_*
 **/labels/fflib_*
 
+# Overige bestanden die niet gedeployed hoeven te worden
+**/pages/BandwidthExceeded.page*
+**/pagesChangePassword.page*
+**/pages/CommunitiesLanding.page*
+**/pages/CommunitiesLogin.page*
+**/pages/CommunitiesSelfReg.page*
+**/pages/CommunitiesSelfRegConfirm.page*
+**/pages/Exception.page*
+**/pages/FileNotFound.page*
+**/pages/ForgotPassword.page*
+**/pages/ForgotPasswordConfirm.page*
+**/pages/InMaintenance.page*
+**/pages/MicrobatchSelfReg.page*
+**/pages/MyProfilePage.page*
+**/pages/SiteLogin.page*
+**/pages/SiteRegister.page*
+**/pages/SiteRegisterConfirm.page*
+**/pages/SiteTemplate.page*
+**/pages/StdExceptionTemplate.page*
+**/pages/Unauthorized.page*
+**/pages/UnderConstruction.page*
+**/components/SiteFooter.page*
+**/components/SiteLogin.page*
+**/components/SitePoweredBy.page*
+
+U
