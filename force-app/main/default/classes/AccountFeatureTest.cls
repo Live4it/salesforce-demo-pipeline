@@ -1,6 +1,6 @@
 /**
  * File Name: AccountFeatureTest 
- * Description:
+ * Description: .......
  *
  * This file is part of an Apex EnterPrise Patterns Training.
  *
@@ -21,7 +21,7 @@
 @IsTest
 private class AccountFeatureTest
 {
-    private static final String HOLLAND = 'Holland';
+    private static final String HOLLAND = 'Netherlands';
 
     @IsTest
     static void testBehavior()
