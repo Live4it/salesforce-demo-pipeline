@@ -25,4 +25,16 @@ public class Accounts extends fflib_SObjectDomain implements IAccounts {
             AccountsService.syncMailingCountryToContacts(accountsWithChangedCountryIds);
         }
     }
+
+    // Onze business logica
+    public void evaluateVipStatus(fflib_ISObjectUnitOfWork uow) {
+        for(Account acc : (List<Account>) getRecords()) {
+            if(acc.AnnualRevenue >= 1000000) {
+                acc.Description = 'VIP Account - Prioriteit Behandeling';
+                uow.registerDirty(acc);
+            }
+        }
+    }
+
+
 }
