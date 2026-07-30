@@ -35,4 +35,26 @@ private class AccountsSelectorTest {
         Assert.isTrue(query.contains('Name'), 'Query moet Name bevatten');
         Assert.isTrue(query.contains('Id'), 'Query moet Id bevatten');
     }
+
+    @IsTest
+    static void testSelectById_ShouldReturnCorrectAccountAndFields() {
+        // 1. Maak een echt record aan (nodig voor Selector tests)
+        Account acc = new Account(
+            Name = 'Selector Test BV',
+            AnnualRevenue = 500000
+        );
+        insert acc;
+
+        // 2. Voer de selector uit
+        Test.startTest();
+        List<Account> result = AccountsSelector.newInstance().selectById(new Set<Id>{ acc.Id });
+        Test.stopTest();
+
+        // 3. Verifieer de resultaten
+        System.assertEquals(1, result.size(), 'De selector had exact 1 record moeten vinden.');
+        System.assertEquals(acc.Id, result[0].Id);
+        System.assertEquals('Selector Test BV', result[0].Name);
+        System.assertEquals(500000, result[0].AnnualRevenue);
+    }
+
 }

@@ -53,4 +53,61 @@ private class AccountsTest {
         ((IAccountsService) mocks.verify(serviceMock, mocks.never()))
             .syncMailingCountryToContacts(new Set<Id>{ accId });
     }
+
+ @IsTest
+    static void testEvaluateVipStatus_WithHighRevenue_ShouldSetDescription() {
+        // 1. Setup Mock voor de Unit of Work (omdat het domain records registreert in de UOW)
+        fflib_ApexMocks mocks = new fflib_ApexMocks();
+        fflib_ISObjectUnitOfWork uowMock = (fflib_ISObjectUnitOfWork) mocks.mock(fflib_SObjectUnitOfWork.class);
+        
+        // 2. Maak testdata aan in het geheugen (geen DML!)
+        Account highRevenueAccount = new Account(
+            Id = fflib_IDGenerator.generate(Account.SObjectType),
+            AnnualRevenue = 1200000,
+            Description = ''
+        );
+        
+        // 3. Instantieer de Domain klasse met de testdata
+        Accounts domain = new Accounts(new List<Account>{ highRevenueAccount });
+
+        // 4. Voer de methode uit
+        Test.startTest();
+        domain.evaluateVipStatus(uowMock);
+        Test.stopTest();
+
+        // 5. Assert: Is de omschrijving in het geheugen aangepast?
+        System.assertEquals('VIP Account - Prioriteit Behandeling', highRevenueAccount.Description);
+        
+        // 6. Assert: Is het record geregistreerd bij de Unit of Work?
+        ((fflib_ISObjectUnitOfWork) mocks.verify(uowMock, 1)).registerDirty(highRevenueAccount);
+    }
+
+    @IsTest
+    static void testEvaluateVipStatus_WithLowRevenue_ShouldNotChangeDescription() {
+        // 1. Setup Mock voor de Unit of Work
+        fflib_ApexMocks mocks = new fflib_ApexMocks();
+        fflib_ISObjectUnitOfWork uowMock = (fflib_ISObjectUnitOfWork) mocks.mock(fflib_SObjectUnitOfWork.class);
+        
+        // 2. Maak testdata aan met te lage omzet
+        Account lowRevenueAccount = new Account(
+            Id = fflib_IDGenerator.generate(Account.SObjectType),
+            AnnualRevenue = 500000, // Te laag voor VIP
+            Description = 'Originele Omschrijving'
+        );
+        
+        // 3. Instantieer de Domain klasse
+        Accounts domain = new Accounts(new List<Account>{ lowRevenueAccount });
+
+        // 4. Voer de methode uit
+        Test.startTest();
+        domain.evaluateVipStatus(uowMock);
+        Test.stopTest();
+
+        // 5. Asserts: De omschrijving mag NIET veranderd zijn
+        System.assertEquals('Originele Omschrijving', lowRevenueAccount.Description, 'De omschrijving had niet mogen veranderen.');
+        
+        // 6. Verifieer met Apex Mocks dat registerDirty NOOIT (0 keer) is aangeroepen
+        ((fflib_ISObjectUnitOfWork) mocks.verify(uowMock, 0)).registerDirty(lowRevenueAccount);
+    }   
+
 }
