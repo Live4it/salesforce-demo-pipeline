@@ -1,3 +1,3 @@
 public interface IAccountsService {
-    void syncMailingCountryToContacts(Set<Id> accountIds); 
+    void syncMailingCountryToContacts(Set<Id> accountIds);
 }
