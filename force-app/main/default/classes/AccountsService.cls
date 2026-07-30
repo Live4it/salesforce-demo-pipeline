@@ -8,4 +8,9 @@ public class AccountsService {
     public static void syncMailingCountryToContacts(Set<Id> accountIds) {
         service().syncMailingCountryToContacts(accountIds);
     }
+
+    public static void updateVipStatus(Set<Id> accountIds) {
+        ((IAccountsService) Application.Service.newInstance(IAccountsService.class))
+            .updateVipStatus(accountIds);
+    }
 }

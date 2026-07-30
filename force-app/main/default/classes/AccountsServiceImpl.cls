@@ -28,4 +28,23 @@ public class AccountsServiceImpl implements IAccountsService {
         // 4. Commit de database transactie
         uow.commitWork();
     }
+
+    public void updateVipStatus(Set<Id> accountIds) {
+        // 1. Maak Unit of Work aan
+        fflib_ISObjectUnitOfWork uow = Application.UnitOfWork.newInstance();
+        
+        // 2. Haal data op via de Selector
+        List<Account> accounts = ((IAccountsSelector) Application.Selector.newInstance(Account.SObjectType))
+            .selectById(accountIds);
+        
+        // 3. LAAD de records in de Domain klasse
+        Accounts domainAccounts = (Accounts) Application.Domain.newInstance(accounts);
+        
+        // 4. Voer de logica uit
+        domainAccounts.evaluateVipStatus(uow);
+        
+        // 5. Commit naar de database
+        uow.commitWork();
+    }
+
 }
