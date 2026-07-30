@@ -1,0 +1,26 @@
+[33m3781558[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/demo-sprint-wijziging[m[33m, [m[1;31morigin/feature/demo-sprint-wijziging[m[33m)[m feat: Aanpassing voor de demo sprint222
+[33m61af102[m feat: Aanpassing voor de demo sprint222
+[33m8991f5d[m feat: Aanpassing voor de demo sprint
+[33m1c2b615[m feat: Aanpassing voor de demo sprint
+[33m27312ea[m feat: Aanpassing voor de demo sprint
+[33m8b02410[m feat: Aanpassing voor de demo sprint
+[33m2b93984[m[33m ([m[1;32mdev[m[33m)[m Merge pull request #1 from Live4it/feature/demo-layout
+[33m2581898[m[33m ([m[1;31morigin/feature/demo-layout[m[33m, [m[1;32mfeature/demo-layout[m[33m)[m a pipeline test
+[33m24083d0[m Modification country
+[33m3ed0ab2[m laatste aanpasssing?
+[33m4784ba9[m test
+[33md1a0f04[m new version forveignore to solve validatie in pipeline
+[33m192d07c[m Wijzigingen ignore files ivm fflib errors
+[33m3a54d62[m feat: Een nieuwe feature voor de demo sprint
+[33mcc3e889[m a test PMD
+[33m5c3229f[m PMD check test
+[33m6ea8606[m a test
+[33m985bf82[m PMD Test push
+[33mbc40096[m add pmd
+[33m0ac1028[m pmd add
+[33m24ee106[m Huskey test2
+[33m5f1786f[m Huskey test
+[33m411455e[m Test change for Huskey
+[33mcfc71db[m Lint Config file to only check what has been changed
+[33mcf02154[m Chore: Husky v9 pre-commit check ingericht
+[33mf11dd65[m[33m ([m[1;32mmain[m[33m)[m Initial commit: Schone Salesforce broncode
