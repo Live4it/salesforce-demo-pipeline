@@ -21,7 +21,7 @@ public class Accounts extends fflib_SObjectDomain implements IAccounts {
         }
 
         // Delegeer de daadwerkelijke actie naar de Service-laag
-        if (!accountsWithChangedCountryIds.isEmpty()) {  
+        if (!accountsWithChangedCountryIds.isEmpty()) {
             AccountsService.syncMailingCountryToContacts(accountsWithChangedCountryIds);
         }
     }
