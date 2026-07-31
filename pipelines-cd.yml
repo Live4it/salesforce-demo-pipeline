@@ -1,0 +1,41 @@
+trigger:
+  branches:
+    include:
+      - dev
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - group: salesforce-credentials
+
+steps:
+- task: UseNode@1
+  inputs:
+    version: '22.x'
+  displayName: 'Install Node.js (Stabiele v22)'
+
+- script: |
+    npm install -g @salesforce/cli
+  displayName: 'Install Salesforce CLI'
+
+- task: DownloadSecureFile@1
+  name: sfKeyFile
+  inputs:
+    secureFile: 'server.key'
+  displayName: 'Download Salesforce Private Key Securely'
+
+# --- IMPLEMENTATIE NAAR DEV OMGEVING (Bij push/merge naar dev branch) ---
+- script: |
+    sf org login jwt --username $(sfUsernameDev) --jwt-key-file $(sfKeyFile.secureFilePath) --client-id $(sfConsumerKeyDev) --instance-url https://login.salesforce.com
+    sf project deploy start --source-dir force-app --target-org $(sfUsernameDev) --wait 30
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+  displayName: 'Deploy naar Dev Sandbox (Developer Org)'
+
+# --- IMPLEMENTATIE NAAR PROD OMGEVING (Bij push/merge naar main branch) ---
+- script: |
+    sf org login jwt --username $(sfUsernameProd) --jwt-key-file $(sfKeyFile.secureFilePath) --client-id $(sfConsumerKeyProd) --instance-url https://login.salesforce.com
+    sf project deploy start --source-dir force-app --target-org $(sfUsernameProd) --wait 30
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  displayName: 'Deploy naar Productie Org'
