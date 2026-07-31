@@ -26,7 +26,26 @@ public class Accounts extends fflib_SObjectDomain implements IAccounts {
         }
     }
 
+    public override void onBeforeInsert() {
+        // In de trigger zelf hebben we geen UOW nodig, 
+        // we passen de records direct in het geheugen aan.
+        applyVipStatusLogic();
+    }   
+
+
+    // Interne helper methode voor de trigger (past records direct aan)
+    private void applyVipStatusLogic() {
+        for(Account acc : (List<Account>) getRecords()) {
+            if(acc.AnnualRevenue >= 1000000) {
+                acc.Description = 'VIP Account - Prioriteit Behandeling';
+            }
+        }
+    }    
+
     // Onze business logica
+
+    /* ---- Bestaande business logica voor de SERVICE-laag ---- */
+    // De Service maakt de UOW aan en geeft deze hieraan mee.   
     public void evaluateVipStatus(fflib_ISObjectUnitOfWork uow) {
         for(Account acc : (List<Account>) getRecords()) {
             if(acc.AnnualRevenue >= 1000000) {
@@ -34,6 +53,10 @@ public class Accounts extends fflib_SObjectDomain implements IAccounts {
                 uow.registerDirty(acc);
             }
         }
+    }
+
+    public override void onBeforeUpdate(Map<Id, SObject> existingRecords) {
+        applyVipStatusLogic();
     }
 
 
